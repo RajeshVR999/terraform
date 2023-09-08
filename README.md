@@ -70,3 +70,42 @@ ssh-keygen -t rsa -b 4096 -C "rajeshpadma99@gmail.com"
 
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
+
+
+#terraform Outputs 
+output "instance_ip_addr" {
+    value = aws_instance.server.private_ip
+}
+
+output "sample" {
+    value ="hello world"
+}
+
+output prints a message on the screen.
+output blocks helps in printing the created resource attributes & arguments on the screen
+outputs with modules work as data transmitter
+You can define mutiple output blocks.
+
+
+terraform registry (all HCL blocks available here)
+
+
+
+
+sudo yum install python3-pip -y
+pip3 install awscli --upgrade --user
+
+aws configure # to configure IAM setup 
+
+to get aws access key and security access key , goto IAM and select any user inside that goto securty 
+
+
+Access key: 
+Secret access key: 
+eu-north-1
+
+aws iam list-access-keys
+
+
+
+
