@@ -273,3 +273,41 @@ terraform with aws extends its supports to having a locking mechanism with dynam
 
 output direct could not send from one module to another module 
 output goes to root first than we can fetch output from root module to another module.
+
+
+--------------
+Topics 
+output 
+variables 
+modules 
+modules with output 
+data resources (exiting resourse)
+Provisioners 
+
+Provisioners are used to execute certain tasks after the resources creation,
+For example : 
+connect to instance and perform some commands , copy somefiles to the instance that got created 
+
+provisioner is a sub-block in resource 
+
+types of provisioners 
+local-exec 
+remote-exec
+
+if provisioner is fails means terraform output show ec2 instance also shows fails in terraform output.
+
+so choose remote-exec 
+
+connect {
+  typer = "ssh"
+  user = "centos"
+  password = "****"
+  host = self.private_ip
+}
+
+Provisioner "remote=-exec"  {
+  inline = [anisible cmds]
+}
+
+*terraform complies the alphbetic order to  load it with logical order to execute 
+
