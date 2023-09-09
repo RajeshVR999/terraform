@@ -1,5 +1,3 @@
-# terraform Notes 
-
 WHy Terraform ?
 Lower Operation cost 
 versioned infra
@@ -100,12 +98,178 @@ aws configure # to configure IAM setup
 to get aws access key and security access key , goto IAM and select any user inside that goto securty 
 
 
-Access key: 
+Access key 
 Secret access key: 
 eu-north-1
+
+export AWS_ACCESS_KEY_ID=your-access-key-id
+export AWS_SECRET_ACCESS_KEY=your-secret-access-key
+export AWS_DEFAULT_REGION=your-preferred-region
 
 aws iam list-access-keys
 
 
 
 
+terraform type of variable supports 
+    1. Strings
+    2. Numbers
+    3. Booleans
+
+output variable is most importance 
+
+#Default variable type 
+variable "sample" {
+    default = "hello"
+}
+
+#List variable type
+variable "sample" {
+    default = [
+        "hello"
+        1000'
+        true
+        "world"
+    ]
+
+    }
+}
+
+#Map variable type 
+variable "sample" {
+    default = {
+        string = "hello"
+        number = 100,
+        boolean = true
+    }
+}
+
+
+
+default vars
+input vars 
+.tfvars
+terraform CLI
+shell enviroments variable is least variables 
+
+
+variable "city" {
+    value = "name of the city is $(var.city)"
+}
+
+variable "state" {
+    value = "name of the state is $(var.state)"
+}
+
+
+terraform apply -auto-approve -var state=karnataka
+terraform apply -auto-approve -var-file=sample.tfvars
+
+
+auto pick the variable is
+
+terraform.tfvars  auto pick 
+terraform.auto.tfvars auto pick
+
+dev.tfvars  manual 
+prod.tfvars manual 
+
+Variable "sample" {}
+
+High prority to low priority 
+
+-var
+-var-file
+*.auto.tfvars
+low priority shell env vars like "export"
+-----------------------------------------------------------------
+
+
+terraform {
+    required_providers {
+        prod = {
+            source = "hashicorp/aws"
+            version = "1.0"
+        }
+        dev = {
+            source = "hashicorp/aws"
+            version = "2.0"
+              
+        }
+    }
+}
+
+provider "aws" {}
+provider "azurerm" {}
+
+--------------------
+
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.16.1"
+    }
+  }
+}
+
+provider "aws" {
+  # Configuration options
+}
+
+
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.12.0"
+    }
+  }
+}
+
+
+Arguments and Attributes in terraform
+
+Arguments are the build blocks of the resources that you wish to create, which are like the properties to be used to create instance.
+
+EX: ``` AMI to use , Security Group To Use, Network To Use``` 
+
+Attributes are the properties which can only be see once the resource is provisioned.
+
+Ex: ``` Instance ID, Private IP, Public IP```
+Depends on the type of changes, terraform change can be either --> Concurrent --> Disruptive --> Destroy and recreate
+
+
+
+examples : 
+
+Manually if we change the type t3.micro to t2,micro so manually require to stop instance and do so that only it enables.
+
+in terraform , if change the t3 to t2.micro , it will stop the current instance and it will action it and start the  instance with updated t2.micro
+
+
+if suppose if changes resoruce  tag names 
+
+it will destroy current resources (instance) and it will re-create the new instance with which are updated t2.micro.
+
+
+* You created the infra with terraform and updated that manually and you run terraform, what will happen ?
+ We will lose all the manual changes and will the changes as per the code.
+
+ * what excatly is happening ?
+  when you terraform plan, first your statefile will be validated against the current real-infra and with the terrform code and then will do the necessary changes
+
+
+  Mutiple people can provising infa at a same time what will be happen ?
+
+Only one person can allow it to provising the infra
+
+if require mutiple persons can deploy to allow means
+Terraform locking machism has to do 
+or else terraform paid version can allow for multiple persons to run
+
+terraform with aws extends its supports to having a locking mechanism with dynamoDB db integreated with s2 state file
+
+
+output direct could not send from one module to another module 
+output goes to root first than we can fetch output from root module to another module.
